@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <record model="ir.module.category" id="purchase.module_category_purchase">
+        <field name="name">Purchase catgeory</field>
+         <field name="model">purchase.order</field>
+        <field name="description">Helps you manage your purchase-related processes such as requests for quotations, supplier bills, etc...</field>
+        <field name="sequence">88</field>
+    </record> -->
+
+    <!-- <record id="group_purchase_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_operations_purchase"/>
+    </record> -->
+
+    <record id="group_purchase_chief" model="res.groups">
+        <field name="name">Responsable</field>
+        <field name="category_id" ref="base.module_category_operations_purchase"/>
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+    </record>
+
+    <record id="group_purchase_director" model="res.groups">
+        <field name="name">Directeur</field>
+        <field name="category_id" ref="base.module_category_operations_purchase"/>
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+    </record>
+
+    <record id="group_purchase_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_operations_purchase"/>
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+    </record>
+
+</odoo>
