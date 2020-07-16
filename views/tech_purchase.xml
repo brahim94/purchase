@@ -27,8 +27,8 @@
             
                 <xpath expr="/form/header" position="replace">
                     <header>
-                    <button name="action_rfq_send" states="draft" string="Envoyer par Email" type="object" context="{'send_rfq':True}" class="oe_highlight"/>
-                    <button name="print_quotation" string="Imprimer demande de prix" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
+                    <button name="action_rfq_send" states="draft" string="Envoyer" type="object" context="{'send_rfq':True}" class="oe_highlight"/>
+                    <button name="print_quotation" string="Imprimer D.Prix" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
                     <!--les nouveaux bouttons ajoutés d'ici...-->
                     <button name="action_verifie" type="object" string="Vérifier"  states="draft" class="oe_highlight" groups="purchase.group_purchase_chief"/>
                     <button name="action_aprouve" type="object" string="Approuver" states="draft"/>
