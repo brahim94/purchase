@@ -48,6 +48,25 @@ class Tech_purchase_oreder(models.Model):
     first_limit_id = fields.Monetary(related='limit.first_limit')
     second_limit_id = fields.Monetary(related='limit.second_limit')
 
+    def button_confirm(self):
+        for order in self:
+            if order.state not in ['draft', 'sent']:
+                continue
+            order._add_supplier_to_product()
+            # Deal with tripple validation process
+            if order.company_id.po_double_validation == 'one_step'\
+                    or (order.company_id.po_double_validation == 'two_step'\
+                        and order.amount_total < self.env.company.currency_id._convert(
+                            order.company_id.po_double_validation_amount, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
+                    or (order.company_id.po_double_validation == 'three_step'\
+                        and order.amount_total < self.env.company.currency_id._convert(
+                            order.first_limit_id, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
+                    or order.user_has_groups('purchase.group_purchase_manager'):
+                order.button_approve()
+            else:
+                order.write({'state': 'to approve'})
+        return True
+
     def action_verifie(self):
         for rec in self:
             rec.state = 'verifie'
@@ -59,3 +78,14 @@ class Tech_purchase_oreder(models.Model):
     def action_valide(self):
         for rec in self:
             rec.state = 'valide'
+
+class res_company_inherit(models.Model):
+    
+    _inherit = "res.company"
+
+    po_double_validation = fields.Selection([
+        ('one_step', 'Confirm purchase orders in one step'),
+        ('two_step', 'Get 2 levels of approvals to confirm a purchase order'),
+        ('three_step', 'Get 3 levels of approvals for a purchase order confirmation')
+        ], string="Levels of Approvals", default='one_step',
+        help="Provide a double validation mechanism for purchases")
